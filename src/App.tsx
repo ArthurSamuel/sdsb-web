@@ -18,6 +18,7 @@ import Profile from "./pages/Profile";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Main from "./components/layout/Main";
+import PasswordReset from './components/sdsb-component/password_reset/PasswordReset'
 import "antd/dist/antd.css";
 import "./assets/styles/main.css";
 import "./assets/styles/responsive.css";
@@ -34,6 +35,7 @@ function App() {
           <Route exact path="/billing" component={Billing} />
           <Route exact path="/rtl" component={Rtl} />
           <Route exact path="/profile" component={Profile} />
+          <Route exact path="/password-reset" component={PasswordReset} />
           <Redirect from="*" to="/dashboard" />
         </Main>
       </Switch>

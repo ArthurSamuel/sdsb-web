@@ -73,7 +73,7 @@ function Sidenav({ color }) {
             <span className="label">Profil</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="6">
+        <Menu.Item key="12">
           <NavLink to="/profile">
             <span
               className="icon"

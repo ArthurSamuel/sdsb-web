@@ -8,9 +8,13 @@ import CardCredit from "../components/sdsb-component/card_credit/CardCredit";
 import CardSmall from "../components/sdsb-component/card_small/CardSmall";
 import { ITransactionGroup } from "../components/sdsb-component/history_transcation/model/HistoryTranscationModel";
 import HistoryTransaction from "../components/sdsb-component/history_transcation/HistoryTransaction";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
+import PaymentModal from "../components/local/PaymentModal";
+import TransferModal from "../components/local/TransferModal";
 
 function Billing() {
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showTransferModal, setShowTransferModal] = useState(false);
   const dataTranscation: ITransactionGroup[] = [
     {
       date: "11/11/2021",
@@ -57,7 +61,7 @@ function Billing() {
                 buttonText="Pay"
                 headerText="Payment"
                 descriptionText="Create Payment"
-                onClick={() => console.log("asd")}
+                onClick={() => setShowPaymentModal(true)}
               ></CardSmall>
             </Col>
             <Col xs={12} md={6} xl={6} className="mb-24">
@@ -66,7 +70,7 @@ function Billing() {
                 buttonText="Transfer"
                 headerText="Transfer"
                 descriptionText="Transfer Wallet"
-                onClick={() => console.log("asd")}
+                onClick={() => setShowTransferModal(true)}
               ></CardSmall>
             </Col>
           </Row>
@@ -79,6 +83,14 @@ function Billing() {
           </Row>
         </Col>
       </Row>
+      <PaymentModal
+        onClose={() => setShowPaymentModal(false)}
+        show={showPaymentModal}
+      ></PaymentModal>
+      <TransferModal
+        onClose={() => setShowTransferModal(false)}
+        show={showTransferModal}
+      ></TransferModal>
     </Fragment>
   );
 }

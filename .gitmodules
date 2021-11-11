@@ -1,0 +1,3 @@
+[submodule "src/components/sdsb-component"]
+	path = src/components/sdsb-component
+	url = https://github.com/ArthurSamuel/sdsb-component.git

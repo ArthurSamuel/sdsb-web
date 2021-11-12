@@ -1,0 +1,13 @@
+.container-wrapper-billing {
+  border-radius: 5px;
+  padding: 20px;
+}
+.container-billing {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+.title {
+  font-weight: bold;
+  text-align: center;
+}

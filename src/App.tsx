@@ -11,7 +11,7 @@
 */
 import { Switch, Route, Redirect } from "react-router-dom";
 import Home from "./pages/Home";
-import Tables from "./pages/Tables";
+import Tables from "./pages/QrcodeComponent";
 import Billing from "./pages/Billing";
 import Profile from "./pages/Profile";
 import SignUp from "./pages/SignUp";

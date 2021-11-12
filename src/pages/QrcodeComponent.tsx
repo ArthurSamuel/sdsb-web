@@ -1,8 +1,8 @@
-import { Card, Button, Tabs, Row, Col } from "antd";
+import { Card, Button, Tabs } from "antd";
 import { Fragment, useState } from "react";
 import "../assets/styles/billing.css";
 
-function Tables() {
+function QrcodeComponent() {
   const { TabPane } = Tabs;
   const [showQr, setShowQr] = useState(false);
   const QrReader = require("react-qr-reader");
@@ -59,4 +59,4 @@ function Tables() {
   );
 }
 
-export default Tables;
+export default QrcodeComponent;

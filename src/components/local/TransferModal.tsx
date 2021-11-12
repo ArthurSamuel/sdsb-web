@@ -1,4 +1,4 @@
-import { Button, Card, Descriptions, Input, Modal } from "antd";
+import { Button, Card, Input, Modal } from "antd";
 import React, { useState } from "react";
 
 interface IPaymentModal {
@@ -24,7 +24,7 @@ export default function TransferModal(props: IPaymentModal) {
       </Modal>
       <Modal
         footer={null}
-        title="Create Payment"
+        title="Transfer Wallet"
         visible={props.show}
         onCancel={() => props.onClose()}
       >

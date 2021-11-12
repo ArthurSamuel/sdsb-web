@@ -13,7 +13,6 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import Home from "./pages/Home";
 import Tables from "./pages/Tables";
 import Billing from "./pages/Billing";
-import Rtl from "./pages/Rtl";
 import Profile from "./pages/Profile";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
@@ -54,7 +53,6 @@ function App() {
           <CreateRoute component={<Home />} path="/dashboard"></CreateRoute>
           <CreateRoute component={<Tables />} path="/tables"></CreateRoute>
           <CreateRoute component={<Billing />} path="/billing"></CreateRoute>
-          <CreateRoute component={<Rtl />} path="/rtl"></CreateRoute>
           <CreateRoute component={<Profile />} path="/profile"></CreateRoute>
           <Route exact component={PasswordReset} path="/password-reset" />
         </Main>

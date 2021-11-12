@@ -9,7 +9,7 @@ import {
   LogoutOutlined,
 } from "@ant-design/icons";
 
-function Sidenav({ color }) {
+function Sidenav(color:any) {
   const { pathname } = useLocation();
   const page = pathname.replace("/", "");
 
@@ -73,8 +73,8 @@ function Sidenav({ color }) {
             <span className="label">Profil</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="12">
-          <NavLink to="/profile">
+        <Menu.Item key="7">
+          <div style={{paddingLeft: 15, paddingTop: 10}}>
             <span
               className="icon"
               style={{
@@ -84,22 +84,7 @@ function Sidenav({ color }) {
               <LogoutOutlined></LogoutOutlined>
             </span>
             <span className="label">Logout</span>
-          </NavLink>
-        </Menu.Item>
-        <Menu.Item className="menu-item-header" key="5">
-          Profil
-        </Menu.Item>
-        <Menu.Item key="7">
-          <NavLink to="/sign-in">
-            <span className="icon"></span>
-            <span className="label">Sign In</span>
-          </NavLink>
-        </Menu.Item>
-        <Menu.Item key="8">
-          <NavLink to="/sign-up">
-            <span className="icon"></span>
-            <span className="label">Sign Up</span>
-          </NavLink>
+          </div>
         </Menu.Item>
       </Menu>
     </>

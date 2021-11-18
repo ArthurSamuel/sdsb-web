@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Col, Row } from "antd";
+import { Col, Row, notification } from "antd";
 import {
   QrcodeOutlined,
   UserOutlined,
@@ -7,11 +7,19 @@ import {
   WhatsAppOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import CardLogo from "../components/sdsb-component/card_logo/CardLogo";
-import HistoryTransaction from "../components/sdsb-component/history_transcation/HistoryTransaction";
-import { ITransactionGroup } from "../components/sdsb-component/history_transcation/model/HistoryTranscationModel";
+import CardLogo from "../../components/sdsb-component/card_logo/CardLogo";
+import HistoryTransaction from "../../components/sdsb-component/history_transcation/HistoryTransaction";
+import { ITransactionGroup } from "../../components/sdsb-component/history_transcation/model/HistoryTranscationModel";
+import HomeService from "./HomeService";
+import { KeyToken } from "../../utils/Constant";
 
 function Home() {
+  let HomeServiceApi = new HomeService()
+
+  function asd() {
+    console.log(localStorage.getItem(KeyToken))
+  }
+
   const dataTranscation: ITransactionGroup[] = [
     {
       date: "11/11/2021",
@@ -44,6 +52,7 @@ function Home() {
   return (
     <React.Fragment>
       <div className="layout-content">
+        <button onClick={() => asd()}>asd</button>
         <Row className="rowgap-vbox" gutter={[24, 0]}>
           <CardLogo
             headerText="Saldo"

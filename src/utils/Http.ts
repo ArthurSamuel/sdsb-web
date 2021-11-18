@@ -6,6 +6,7 @@ interface IRequest {
   method: "POST" | "GET" | "PUT" | "DELETE" | "PATCH";
   data?: {};
   headers?: {};
+  params?: {};
 }
 
 function toFormData(param: any, type: "FormData" | "URLSearchParams") {
@@ -16,8 +17,7 @@ function toFormData(param: any, type: "FormData" | "URLSearchParams") {
   return formData;
 }
 
-export async function Request({ url, method, data, headers }: IRequest) {
-  let token = null;
+export async function Request({ url, method, data, headers, params }: IRequest) {
   let storage = localStorage.getItem(KeyToken);
   let urlServer =
     !process.env.NODE_ENV || process.env.NODE_ENV === "development"
@@ -25,20 +25,32 @@ export async function Request({ url, method, data, headers }: IRequest) {
       : Server.prod;
   let requestParam: IRequest = {
     url: `${urlServer}${url}`,
-    method: method,
-    data:
-      data &&
-      toFormData(data, method === "POST" ? "FormData" : "URLSearchParams"),
+    method: method
   };
   if (storage) {
-    token = JSON.parse(storage).token;
+    let token = JSON.parse(storage).token;
     requestParam = {
       ...requestParam,
       headers: {
-        Authorization: `Bearer ${token}`,
-        ...headers,
+        'Authorization': `Bearer ${token}`,
+        ...headers
       },
     };
+  }
+  if (data) {
+    requestParam = {
+      ...requestParam,
+      data: toFormData(
+        data,
+        method === "POST" ? "FormData" : "URLSearchParams"
+      ),
+    };
+  }
+  if (params) {
+    requestParam = {
+      ...requestParam,
+      params
+    }
   }
   const results = await axios(requestParam);
   return results.data;

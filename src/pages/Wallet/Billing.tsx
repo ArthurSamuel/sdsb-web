@@ -1,20 +1,29 @@
 import { Row, Col } from "antd";
 import {
-  PlusOutlined,
   PayCircleFilled,
   TransactionOutlined,
 } from "@ant-design/icons";
-import CardCredit from "../components/sdsb-component/card_credit/CardCredit";
-import CardSmall from "../components/sdsb-component/card_small/CardSmall";
-import { ITransactionGroup } from "../components/sdsb-component/history_transcation/model/HistoryTranscationModel";
-import HistoryTransaction from "../components/sdsb-component/history_transcation/HistoryTransaction";
-import { Fragment, useState } from "react";
-import PaymentModal from "../components/local/PaymentModal";
-import TransferModal from "../components/local/TransferModal";
+import CardCredit from "../../components/sdsb-component/card_credit/CardCredit";
+import CardSmall from "../../components/sdsb-component/card_small/CardSmall";
+import HistoryTransaction from "../../components/sdsb-component/history_transcation/HistoryTransaction";
+import { Fragment, useEffect, useState } from "react";
+import PaymentModal from "../../components/local/PaymentModal";
+import TransferModal from "../../components/local/TransferModal";
+import { KeyToken } from "../../utils/Constant";
 
 function Billing() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);
+  const [name, setName] = useState('...');
+  const [kode, setKode] = useState('...');
+  const userInformation = localStorage.getItem(KeyToken)
+
+  useEffect(() => {
+    if (userInformation) {
+      let temp = JSON.parse(userInformation)
+      setName(temp.user.name)
+    }
+  },[])
 
   return (
     <Fragment>
@@ -23,8 +32,8 @@ function Billing() {
           <Row gutter={[24, 0]}>
             <Col xs={24} md={12} xl={12} className="mb-24">
               <CardCredit
-                memberCode="CUST_123"
-                userName="Arthur Samuel"
+                memberCode={kode}
+                userName={name}
               ></CardCredit>
             </Col>
             <Col xs={12} md={6} xl={6} className="mb-24">

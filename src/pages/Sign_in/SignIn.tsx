@@ -14,7 +14,7 @@ export default function SignIn() {
 
   async function login() {
     const results = await Service.GetUser(username, password)
-    if (results && results.data) {
+    if (results && results.data && results.data.token) {
       localStorage.setItem(KeyToken, JSON.stringify(results.data))
       window.location.reload()
       return

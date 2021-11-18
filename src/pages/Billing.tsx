@@ -15,34 +15,6 @@ import TransferModal from "../components/local/TransferModal";
 function Billing() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);
-  const dataTranscation: ITransactionGroup[] = [
-    {
-      date: "11/11/2021",
-      data: [
-        {
-          avatar: <PlusOutlined style={{ fontSize: 10 }} />,
-          title: "Apple",
-          description: "27 March 2021, at 04:30 AM",
-          amount: "+ $2,000",
-          textclass: "text-fill",
-          amountcolor: "text-success",
-        },
-      ],
-    },
-    {
-      date: "10/11/2021",
-      data: [
-        {
-          avatar: <PlusOutlined style={{ fontSize: 10 }} />,
-          title: "Switch",
-          description: "28 March 2021, at 04:30 AM",
-          amount: "- $2,000",
-          textclass: "text-light-danger",
-          amountcolor: "text-danger",
-        },
-      ],
-    },
-  ];
 
   return (
     <Fragment>
@@ -76,9 +48,7 @@ function Billing() {
           </Row>
           <Row>
             <Col span={24} md={24}>
-              <HistoryTransaction
-                dataTranscation={dataTranscation}
-              ></HistoryTransaction>
+              <HistoryTransaction></HistoryTransaction>
             </Col>
           </Row>
         </Col>

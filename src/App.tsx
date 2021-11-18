@@ -51,7 +51,7 @@ function App() {
         <Main>
           <Route exact path="/">
             {token && <Redirect to="/dashboard" />}
-            {!token && <Redirect to="/sign-up" />}
+            {!token && <Redirect to="/sign-in" />}
           </Route>
           <CreateRoute component={<Home />} path="/dashboard"></CreateRoute>
           <CreateRoute component={<Tables />} path="/tables"></CreateRoute>

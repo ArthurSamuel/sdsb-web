@@ -10,49 +10,12 @@ import {
 import CardLogo from "../../components/sdsb-component/card_logo/CardLogo";
 import HistoryTransaction from "../../components/sdsb-component/history_transcation/HistoryTransaction";
 import { ITransactionGroup } from "../../components/sdsb-component/history_transcation/model/HistoryTranscationModel";
-import HomeService from "./HomeService";
 import { KeyToken } from "../../utils/Constant";
 
 function Home() {
-  let HomeServiceApi = new HomeService()
-
-  function asd() {
-    console.log(localStorage.getItem(KeyToken))
-  }
-
-  const dataTranscation: ITransactionGroup[] = [
-    {
-      date: "11/11/2021",
-      data: [
-        {
-          avatar: <PlusOutlined style={{ fontSize: 10 }} />,
-          title: "Apple",
-          description: "27 March 2021, at 04:30 AM",
-          amount: "+ $2,000",
-          textclass: "text-fill",
-          amountcolor: "text-success",
-        },
-      ],
-    },
-    {
-      date: "10/11/2021",
-      data: [
-        {
-          avatar: <PlusOutlined style={{ fontSize: 10 }} />,
-          title: "Switch",
-          description: "28 March 2021, at 04:30 AM",
-          amount: "- $2,000",
-          textclass: "text-light-danger",
-          amountcolor: "text-danger",
-        },
-      ],
-    },
-  ];
-
   return (
     <React.Fragment>
       <div className="layout-content">
-        <button onClick={() => asd()}>asd</button>
         <Row className="rowgap-vbox" gutter={[24, 0]}>
           <CardLogo
             headerText="Saldo"
@@ -81,9 +44,7 @@ function Home() {
         </Row>
         <Row>
           <Col xs={24}>
-            <HistoryTransaction
-              dataTranscation={dataTranscation}
-            ></HistoryTransaction>
+            <HistoryTransaction></HistoryTransaction>
           </Col>
         </Row>
       </div>

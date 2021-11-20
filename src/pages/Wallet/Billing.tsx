@@ -10,20 +10,32 @@ import { Fragment, useEffect, useState } from "react";
 import PaymentModal from "../../components/local/PaymentModal";
 import TransferModal from "../../components/local/TransferModal";
 import { KeyToken } from "../../utils/Constant";
+import Spinner from "../../components/sdsb-component/spinner/Spinner";
 
 function Billing() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);
   const [name, setName] = useState('...');
   const [kode, setKode] = useState('...');
+  const [idMember, setIdMember] = useState<string|null>(null);
   const userInformation = localStorage.getItem(KeyToken)
 
   useEffect(() => {
     if (userInformation) {
       let temp = JSON.parse(userInformation)
       setName(temp.user.name)
+      setIdMember(temp.user.member_id);
+      if (temp.user.member.code) {
+        setKode(temp.user.member.code)
+      }
     }
   },[])
+
+  if (!idMember) {
+    return (
+      <Spinner></Spinner>
+    )
+  }
 
   return (
     <Fragment>
@@ -57,7 +69,7 @@ function Billing() {
           </Row>
           <Row>
             <Col span={24} md={24}>
-              <HistoryTransaction></HistoryTransaction>
+              <HistoryTransaction idMember={idMember}></HistoryTransaction>
             </Col>
           </Row>
         </Col>

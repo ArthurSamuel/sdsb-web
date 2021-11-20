@@ -11,3 +11,26 @@
   font-weight: bold;
   text-align: center;
 }
+.container-billing-text-wrapper {
+  width: 250px;
+  display: flex;
+  justify-content: center;
+}
+.container-billing-text-wrapper-button {
+  width: 250px;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  flex-direction: column;
+}
+.container-billing-qr {
+  width: 100%;
+  margin-top: 20px;
+  position: relative;
+  height: 300px;
+}
+.container-billing-qr-position {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}

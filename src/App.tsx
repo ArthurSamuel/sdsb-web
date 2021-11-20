@@ -11,10 +11,10 @@
 */
 import { Switch, Route, Redirect } from "react-router-dom";
 import Home from "./pages/Home/Home";
-import Tables from "./pages/QrcodeComponent";
+import Tables from "./pages/Qrcode/QrcodeComponent";
 import Billing from "./pages/Wallet/Billing";
 import Profile from "./pages/Profile";
-import SignUp from "./pages/SignUp";
+import SignUp from "./pages/Sign_up/SignUp";
 import SignIn from "./pages/Sign_in/SignIn";
 import Main from "./components/layout/Main";
 import PasswordReset from "./components/sdsb-component/password_reset/PasswordReset";
@@ -54,7 +54,7 @@ function App() {
             {!token && <Redirect to="/sign-in" />}
           </Route>
           <CreateRoute component={<Home />} path="/dashboard"></CreateRoute>
-          <CreateRoute component={<Tables />} path="/tables"></CreateRoute>
+          <CreateRoute component={<Tables />} path="/qrcode"></CreateRoute>
           <CreateRoute component={<Billing />} path="/billing"></CreateRoute>
           <CreateRoute component={<Profile />} path="/profile"></CreateRoute>
           <Route exact component={PasswordReset} path="/password-reset" />

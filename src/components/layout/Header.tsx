@@ -1,6 +1,7 @@
 import { useState, useEffect, Fragment } from "react";
 import { Row, Col, Button } from "antd";
 import { IdcardOutlined } from "@ant-design/icons";
+import { KeyToken } from "../../utils/Constant";
 
 const toggler = [
   <svg
@@ -25,13 +26,26 @@ interface IHeader {
 }
 
 function Header(props: IHeader) {
-  useEffect(() => window.scrollTo(0, 0));
+  const userInformation = localStorage.getItem(KeyToken);
+  const [kode, setKode] = useState<string>('...');
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (userInformation) {
+      let temp = JSON.parse(userInformation);
+      setKode(temp.user.member.code);
+    }
+  },[]);
 
   return (
     <Fragment>
       <Row gutter={[24, 0]}>
-        <Col span={24} md={6}></Col>
-        <Col span={24} md={18} className="header-control">
+        <Col
+          xs={12}
+          md={12}
+          className="header-control"
+          style={{ display: "flex", justifyContent: "flex-end" }}
+        >
           <Button
             type="link"
             className="sidebar-toggler"
@@ -39,6 +53,8 @@ function Header(props: IHeader) {
           >
             {toggler}
           </Button>
+        </Col>
+        <Col xs={12} md={12} className="header-control">
           <div
             style={{
               display: "flex",
@@ -49,7 +65,9 @@ function Header(props: IHeader) {
             }}
           >
             <IdcardOutlined></IdcardOutlined>
-            <span style={{ marginLeft: 10, fontWeight: "bold" }}>CUST_123</span>
+            <span style={{ marginLeft: 10, fontWeight: "bold" }}>
+              {kode}
+            </span>
           </div>
         </Col>
       </Row>

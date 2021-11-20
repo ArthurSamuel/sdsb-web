@@ -13,6 +13,11 @@ function Sidenav(color:any) {
   const { pathname } = useLocation();
   const page = pathname.replace("/", "");
 
+  function logout() {
+    localStorage.clear()
+    window.location.reload()
+  }
+
   return (
     <>
       <div className="brand">
@@ -35,11 +40,11 @@ function Sidenav(color:any) {
           </NavLink>
         </Menu.Item>
         <Menu.Item key="2">
-          <NavLink to="/tables">
+          <NavLink to="/qrcode">
             <span
               className="icon"
               style={{
-                background: page === "tables" ? color : "",
+                background: page === "qrcode" ? color : "",
               }}
             >
               <QrcodeOutlined></QrcodeOutlined>
@@ -74,11 +79,11 @@ function Sidenav(color:any) {
           </NavLink>
         </Menu.Item>
         <Menu.Item key="7">
-          <div style={{paddingLeft: 15, paddingTop: 10}}>
+          <div onClick={() => logout()} style={{paddingLeft: 15, paddingTop: 10}}>
             <span
               className="icon"
               style={{
-                background: page === "profile" ? color : "",
+                background: page === "logout" ? color : "",
               }}
             >
               <LogoutOutlined></LogoutOutlined>

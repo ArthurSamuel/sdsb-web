@@ -111,6 +111,18 @@ function Main(props: IMain) {
           </AntHeader>
         )}
         <Content className="content-ant">{props.children}</Content>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            paddingBottom: 20,
+            paddingTop: 20
+          }}
+        >
+          <div style={{ fontSize: "1rem", fontWeight: "bold" }}>
+            SDSB
+          </div>
+        </div>
       </Layout>
     </Layout>
   );

@@ -1,11 +1,13 @@
 import { Fragment, useEffect, useState } from "react";
-import { Row, Col, Modal } from "antd";
+import { Row, Col, Modal, notification } from "antd";
 import BgProfile from "../assets/images/bg-profile.jpg";
 import profilavatar from "../assets/images/face-1.jpg";
 import ProfileComponent from "../components/sdsb-component/profile/Profile";
 import ProfilePicture from "../components/sdsb-component/profile_picture/ProfilePicture";
 import PasswordReset from "../components/sdsb-component/password_reset/PasswordReset";
 import PinReset from "../components/sdsb-component/pin_reset/PinReset";
+import { IPasswordReset } from "../components/sdsb-component/password_reset/model/PasswordReset";
+import { IPinReset } from "../components/sdsb-component/pin_reset/model/PinResetModel";
 
 function Profile() {
   const [showModal, setShowModal] = useState(false);
@@ -16,6 +18,24 @@ function Profile() {
       setShowModal(true);
     }
   }, [credential]);
+
+  function onPasswordSubmit(status: IPasswordReset) {
+    notification.info({
+      message: status.message,
+      description:
+        status.statusCode === 200 ? "Password Updated" : status.error_message,
+      placement: "bottomRight",
+    });
+  }
+
+  function onPinSubmit(status: IPinReset) {
+    notification.info({
+      message: status.message,
+      description:
+        status.statusCode === 200 ? "PIN Updated" : status.error_message,
+      placement: "bottomRight",
+    });
+  }
 
   return (
     <Fragment>
@@ -44,9 +64,11 @@ function Profile() {
         }}
       >
         {credential === "PIN" ? (
-          <PinReset></PinReset>
+          <PinReset onSubmit={(e: IPinReset) => onPinSubmit(e)}></PinReset>
         ) : (
-          <PasswordReset></PasswordReset>
+          <PasswordReset
+            onSubmit={(e: IPasswordReset) => onPasswordSubmit(e)}
+          ></PasswordReset>
         )}
       </Modal>
     </Fragment>

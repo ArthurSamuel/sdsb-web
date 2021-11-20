@@ -1,3 +1,4 @@
+import { IMember } from "../../components/sdsb-component/models/Member";
 interface IUserData {
   id: number;
   username: string;
@@ -10,6 +11,7 @@ interface IUserData {
   description: string;
   status: string;
   pin: string;
+  member: IMember;
 }
 
 interface IUser {

@@ -18,15 +18,19 @@ import Spinner from "../../components/sdsb-component/spinner/Spinner";
 import HomePay from "./HomePay";
 import TransferModal from "../../components/local/TransferModal";
 import { useHistory } from "react-router";
+import HomeService from "./service/HomeService";
 
 function Home() {
+  const Service = new HomeService()
   const history = useHistory()
   const userInformation = localStorage.getItem(KeyToken);
   const [idMember, setIdMember] = React.useState<string | null>(null);
   const [showTransfer, setShowTransfer] = React.useState(false);
   const [name, setName] = React.useState<string>();
+  const [credit, setCredit] = React.useState<string|null>(null)
 
   React.useEffect(() => {
+    getCredit()
     if (userInformation) {
       let temp = JSON.parse(userInformation);
       let tempName: string = temp.user.name;
@@ -40,7 +44,15 @@ function Home() {
     }
   }, []);
 
-  if (!idMember) {
+  async function getCredit() {
+    const resutls = await Service.GetCredit();
+    if (resutls.statusCode === 200) {
+      let temp = resutls.data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      setCredit(temp);
+    }
+  }
+
+  if (!idMember || !credit) {
     return <Spinner></Spinner>;
   }
 
@@ -60,7 +72,7 @@ function Home() {
               >
                 <div>Saldo</div>
                 <div style={{ fontSize: "1.3rem", fontWeight: "bold" }}>
-                  Rp 10.000.000
+                  Rp {credit}
                 </div>
                 <div
                   style={{

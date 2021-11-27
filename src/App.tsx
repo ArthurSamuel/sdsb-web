@@ -13,7 +13,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import Tables from "./pages/Qrcode/QrcodeComponent";
 import Billing from "./pages/Wallet/Billing";
-import Profile from "./pages/Profile";
+import Profile from "./pages/profile/Profile";
 import SignUp from "./pages/Sign_up/SignUp";
 import SignIn from "./pages/Sign_in/SignIn";
 import Main from "./components/layout/Main";
@@ -22,6 +22,7 @@ import "antd/dist/antd.css";
 import "./assets/styles/main.css";
 import "./assets/styles/responsive.css";
 import { KeyToken } from './utils/Constant'
+import Verification from "./pages/Verification/Verification";
 
 interface IPop {
   component: JSX.Element;
@@ -48,6 +49,7 @@ function App() {
           {!token && <SignIn />}
           {token && <Redirect to="/dashboard" />}
         </Route>
+        <Route path="/verification/:emailParam?/:phoneParam?" exact component={Verification} />
         <Main>
           <Route exact path="/">
             {token && <Redirect to="/dashboard" />}

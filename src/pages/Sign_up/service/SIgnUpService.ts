@@ -13,19 +13,25 @@ export default class SignUpService {
     pin,
     idRef,
   }: IRegister): Promise<ISignUp> {
+    let data: any = {
+      name: name,
+      username: username,
+      email: email,
+      password: password,
+      password_confirmation: passwordConfirm,
+      phone: phone,
+      pin: pin,
+    };
+    if (idRef) {
+      data = {
+        ...data,
+        reference_id: idRef,
+      };
+    }
     const results = await Request({
       url: "/register",
       method: "POST",
-      data: {
-        name: name,
-        username: username,
-        email: email,
-        password: password,
-        password_confirmation: passwordConfirm,
-        phone: phone,
-        pin: pin,
-        reference_id: idRef,
-      },
+      data
     });
     return results;
   }

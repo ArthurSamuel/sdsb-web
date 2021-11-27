@@ -1,10 +1,11 @@
 import React, { Fragment, useState } from "react";
 import { Button, Card, Form, Input, notification, Spin } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Content } from "antd/lib/layout/layout";
 import SignUpService from "./service/SIgnUpService";
 
 export default function SignUp() {
+  const history = useHistory()
   const Service = new SignUpService();
   const [name, setName] = useState<string>();
   const [username, setUsername] = useState<string>();
@@ -48,6 +49,9 @@ export default function SignUp() {
         description,
         placement: "bottomRight",
       });
+      if (resutls.statusCode === 200) {
+        history.push(`/verification/${email}/${phone}`)
+      }
     }
   }
 

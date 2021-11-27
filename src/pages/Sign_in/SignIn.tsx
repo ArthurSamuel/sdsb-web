@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Layout, Button, Row, Col, Typography, Form, Input, notification } from "antd";
 import signinbg from "../../assets/images/img-signin.jpg";
 import { Content } from "antd/lib/layout/layout";
@@ -7,6 +7,7 @@ import SignInService from "./SignInService";
 import { KeyToken } from "../../utils/Constant";
 
 export default function SignIn() {
+  const history = useHistory()
   const Service = new SignInService();
   const { Title } = Typography;
   const [username, setUsername] = useState<string>('');
@@ -85,6 +86,15 @@ export default function SignIn() {
                     style={{ width: "100%" }}
                   >
                     SIGN IN
+                  </Button>
+                </Form.Item>
+                <Form.Item>
+                  <Button
+                    onClick={() => history.push('/verification')}
+                    type="default"
+                    style={{ width: "100%" }}
+                  >
+                    VERIFIKASI
                   </Button>
                 </Form.Item>
                 <p className="font-semibold text-muted">

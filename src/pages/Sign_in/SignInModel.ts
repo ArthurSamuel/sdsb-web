@@ -18,6 +18,8 @@ interface IUser {
   user: IUserData;
   token: string;
   expires: number;
+  email: string;
+  phone: string;
 }
 
 export interface ISignIn {

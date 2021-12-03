@@ -39,13 +39,14 @@ export default class SignUpService {
     identifier: string,
     type: "phone" | "email"
   ): Promise<IVerification> {
-    const url = type === "phone" ? "" : "/resend-verification";
+    const url =
+      type === "phone" ? "/resend-phone-verification" : "/resend-verification";
     const results = await Request({
       url,
       method: "POST",
       data: {
         email: identifier,
-        phone: identifier,
+        phone_number: identifier,
       },
     });
     return results;

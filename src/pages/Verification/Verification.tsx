@@ -6,7 +6,8 @@ import { useHistory, useParams } from "react-router";
 export default function Verification() {
   const Service = new SignUpService();
   const history = useHistory();
-  const { emailParam, phoneParam } = useParams<{emailParam: string, phoneParam: string}>()
+  const { emailParam, phoneParam } =
+    useParams<{ emailParam: string; phoneParam: string }>();
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<string>();
   const [phoneVer, setPhoneVer] = useState<string>();
@@ -26,11 +27,72 @@ export default function Verification() {
   useEffect(() => {
     if (timerEmail >= 60 && refTimerEmail.current) {
       clearInterval(refTimerEmail.current);
+      refTimerEmail.current = null;
     }
+  }, [timerEmail]);
+
+  useEffect(() => {
     if (timerPhone >= 60 && refTimerPhone.current) {
       clearInterval(refTimerPhone.current);
+      refTimerPhone.current = null;
     }
-  }, [timerEmail, timerPhone]);
+  },[timerPhone])
+
+  async function sentEmailCode() {
+    const identifier = email;
+    if (!identifier) {
+      return;
+    }
+    if (timerEmail === 60) {
+      const results = await Service.SentVerificationCode(identifier, "email");
+      notification.open({
+        message:
+          results.statusCode === 200
+            ? "Berhasil Mengirim Kode"
+            : results.error_message,
+        placement: "bottomRight",
+        type: "info",
+      });
+      if (results.statusCode === 200) {
+        refTimerEmail.current = setInterval(() => {
+          setTimerEmail((prev) => {
+            if (prev - 1 > 0) {
+              return prev - 1;
+            }
+            return 60;
+          });
+        }, 1000);
+      }
+    }
+  }
+
+  async function sentPhoneCode() {
+    const identifier = phone;
+    if (!identifier) {
+      return;
+    }
+    if (timerPhone === 60) {
+      const results = await Service.SentVerificationCode(identifier, "phone");
+      notification.open({
+        message:
+          results.statusCode === 200
+            ? "Berhasil Mengirim Kode"
+            : results.error_message,
+        placement: "bottomRight",
+        type: "info",
+      });
+      if (results.statusCode === 200) {
+        refTimerPhone.current = setInterval(() => {
+          setTimerPhone((prev) => {
+            if (prev - 1 > 0) {
+              return prev - 1;
+            }
+            return 60;
+          });
+        }, 1000);
+      }
+    }
+  }
 
   async function sentCode(type: "phone" | "email") {
     const timerToCount = type === "phone" ? timerPhone : timerEmail;
@@ -93,7 +155,7 @@ export default function Verification() {
       }
     } else {
       notification.open({
-        message: 'Mohon Lengkapi Form',
+        message: "Mohon Lengkapi Form",
         placement: "bottomRight",
         type: "info",
       });
@@ -140,10 +202,11 @@ export default function Verification() {
                 onChange={(e) => setEmailVer(e.target.value)}
               />
               <div
-                onClick={() => sentCode("email")}
+                onClick={() => sentEmailCode()}
                 style={{ padding: 10, fontSize: 12 }}>
                 <span
                   style={{
+                    cursor: "pointer",
                     marginRight: 20,
                     color: timerEmail < 60 ? "#dedede" : "black",
                   }}>
@@ -166,10 +229,11 @@ export default function Verification() {
                 onChange={(e) => setPhoneVer(e.target.value)}
               />
               <div
-                onClick={() => sentCode("phone")}
+                onClick={() => sentPhoneCode()}
                 style={{ padding: 10, fontSize: 12 }}>
                 <span
                   style={{
+                    cursor: "pointer",
                     marginRight: 20,
                     color: timerPhone < 60 ? "#dedede" : "black",
                   }}>

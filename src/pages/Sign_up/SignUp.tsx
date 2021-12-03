@@ -12,7 +12,7 @@ export default function SignUp() {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
   const [passwordConfirm, setPasswordConfirm] = useState<string>();
-  const [phone, setPhone] = useState<number>();
+  const [phone, setPhone] = useState<string>();
   const [pin, setPin] = useState<string>();
   const [idRef, setIdRef] = useState<string>();
   const [isFetch, setIsFetch] = useState(false);
@@ -135,8 +135,7 @@ export default function SignUp() {
                 ]}
               >
                 <Input
-                  type={"number"}
-                  onChange={(e) => setPhone(parseInt(e.target.value))}
+                  onChange={(e) => setPhone(e.target.value)}
                   placeholder="Phone Number"
                 />
               </Form.Item>

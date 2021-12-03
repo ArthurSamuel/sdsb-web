@@ -19,6 +19,8 @@ export default function SignIn() {
       localStorage.setItem(KeyToken, JSON.stringify(results.data))
       window.location.reload()
       return
+    } else if (results.statusCode === 700) {
+      history.push(`/verification/${results.data.email}/${results.data.phone}`)
     }
     notification.error({
       message: results.message,
@@ -86,15 +88,6 @@ export default function SignIn() {
                     style={{ width: "100%" }}
                   >
                     SIGN IN
-                  </Button>
-                </Form.Item>
-                <Form.Item>
-                  <Button
-                    onClick={() => history.push('/verification')}
-                    type="default"
-                    style={{ width: "100%" }}
-                  >
-                    VERIFIKASI
                   </Button>
                 </Form.Item>
                 <p className="font-semibold text-muted">

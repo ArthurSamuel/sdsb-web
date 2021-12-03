@@ -11,7 +11,7 @@ export interface IRegister {
   email: string;
   password: string;
   passwordConfirm: string;
-  phone: number;
+  phone: string;
   pin: string;
   idRef?: string;
 }

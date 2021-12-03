@@ -1,6 +1,5 @@
 import { IRegister, ISignUp } from "../model/SignUpModel";
 import { Request } from "../../../utils/Http";
-import { IMember } from "../../../components/sdsb-component/models/Member";
 
 export default class SignUpService {
   public async Register({

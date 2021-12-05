@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Card, Col, Row } from "antd";
+import { Button, Card, Col, notification, Row } from "antd";
 import {
   QrcodeOutlined,
   UserOutlined,
@@ -13,6 +13,7 @@ import {
   CustomerServicePhone,
   CustomerServiceWA,
   CustomerServiceWAMessage,
+  Server,
 } from "../../utils/Constant";
 import Spinner from "../../components/sdsb-component/spinner/Spinner";
 import HomePay from "./HomePay";
@@ -21,20 +22,22 @@ import { useHistory } from "react-router";
 import HomeService from "./service/HomeService";
 
 function Home() {
-  const Service = new HomeService()
-  const history = useHistory()
+  const Service = new HomeService();
+  const history = useHistory();
   const userInformation = localStorage.getItem(KeyToken);
   const [idMember, setIdMember] = React.useState<string | null>(null);
   const [showTransfer, setShowTransfer] = React.useState(false);
   const [name, setName] = React.useState<string>();
-  const [credit, setCredit] = React.useState<string|null>(null)
+  const [credit, setCredit] = React.useState<string | null>(null);
+  const [username, setUsername] = React.useState<string>()
 
   React.useEffect(() => {
-    getCredit()
+    getCredit();
     if (userInformation) {
       let temp = JSON.parse(userInformation);
       let tempName: string = temp.user.name;
       let tempNameSplited = tempName.split(" ");
+      setUsername(temp.user.username)
       if (tempNameSplited.length > 2) {
         setName(`${tempNameSplited[0]} ${tempNameSplited[1]}`);
       } else {
@@ -52,13 +55,23 @@ function Home() {
     }
   }
 
+  function copyToClipboard() {
+    let tempUrl = `${window.location.origin}/sign-up/${username}`
+    navigator.clipboard.writeText(tempUrl)
+    notification.info({
+      message: 'Link Ref Berhasil Di Copy',
+      placement: 'bottomRight',
+      duration: 1000
+    })
+  }
+
   if (!idMember || !credit) {
     return <Spinner></Spinner>;
   }
 
   return (
     <React.Fragment>
-      <div className="layout-content">
+      <div className='layout-content'>
         <div style={{ marginBottom: 20 }}>
           <Card>
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -68,8 +81,7 @@ function Home() {
                 </div>
               </div>
               <div
-                style={{ flex: 1, display: "flex", flexDirection: "column" }}
-              >
+                style={{ flex: 1, display: "flex", flexDirection: "column" }}>
                 <div>Saldo</div>
                 <div style={{ fontSize: "1.3rem", fontWeight: "bold" }}>
                   Rp {credit}
@@ -86,42 +98,45 @@ function Home() {
                 <div style={{ marginBottom: 10 }}>
                   <HomePay></HomePay>
                 </div>
-                <Button onClick={() => setShowTransfer(true)} type={"default"}>
-                  Transfer SDSB
+                <div style={{marginBottom: 10, width: '100%'}}>
+                  <Button style={{width: '100%'}} onClick={() => setShowTransfer(true)} type={"default"}>
+                    Transfer SDSB
+                  </Button>
+                </div>   
+                <Button onClick={() => copyToClipboard()} type={"link"}>
+                  Bagikan Kode Ref 
                 </Button>
               </div>
             </div>
           </Card>
         </div>
-        <Row className="rowgap-vbox" gutter={[24, 0]}>
+        <Row className='rowgap-vbox' gutter={[24, 0]}>
           <CardLogo
-            headerText="Transaksi"
-            content="QR Code"
+            headerText='Transaksi'
+            content='QR Code Saya'
             icon={<QrcodeOutlined></QrcodeOutlined>}
-            onClick={() => history.push('/qrcode')}
-          ></CardLogo>
+            onClick={() => history.push("/qrcode")}></CardLogo>
           <CardLogo
-            headerText="Profil"
-            content="Profil Saya"
+            headerText='Profil'
+            content='Profil Saya'
             icon={<UserOutlined></UserOutlined>}
-            onClick={() => history.push('/profile')}
-          ></CardLogo>
+            onClick={() => history.push("/profile")}></CardLogo>
           <CardLogo
-            headerText="Bantuan"
-            content="Telp"
+            headerText='Bantuan'
+            content='Telp'
             icon={<PhoneOutlined></PhoneOutlined>}
-            onClick={() => window.open(`tel:${CustomerServicePhone}`)}
-          ></CardLogo>
+            onClick={() =>
+              window.open(`tel:${CustomerServicePhone}`)
+            }></CardLogo>
           <CardLogo
-            headerText="Bantuan"
-            content="WA"
+            headerText='Bantuan'
+            content='WA'
             icon={<WhatsAppOutlined></WhatsAppOutlined>}
             onClick={() =>
               window.open(
                 `whatsapp://send/?phone=${CustomerServiceWA}&text=${CustomerServiceWAMessage}`
               )
-            }
-          ></CardLogo>
+            }></CardLogo>
         </Row>
         <Row>
           <Col xs={24}>
@@ -131,8 +146,7 @@ function Home() {
       </div>
       <TransferModal
         show={showTransfer}
-        onClose={() => setShowTransfer(false)}
-      ></TransferModal>
+        onClose={() => setShowTransfer(false)}></TransferModal>
     </React.Fragment>
   );
 }

@@ -1,11 +1,13 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Button, Card, Form, Input, notification, Spin } from "antd";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { Content } from "antd/lib/layout/layout";
 import SignUpService from "./service/SIgnUpService";
+import Spinner from "../../components/sdsb-component/spinner/Spinner";
 
 export default function SignUp() {
-  const history = useHistory()
+  const { refCode } = useParams<{ refCode: string; }>();
+  const history = useHistory();
   const Service = new SignUpService();
   const [name, setName] = useState<string>();
   const [username, setUsername] = useState<string>();
@@ -16,6 +18,12 @@ export default function SignUp() {
   const [pin, setPin] = useState<string>();
   const [idRef, setIdRef] = useState<string>();
   const [isFetch, setIsFetch] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIdRef(refCode)
+    setIsLoading(false)
+  },[refCode])
 
   async function doRegister() {
     if (
@@ -27,7 +35,7 @@ export default function SignUp() {
       phone &&
       pin
     ) {
-      setIsFetch(true)
+      setIsFetch(true);
       const resutls = await Service.Register({
         name,
         username,
@@ -38,7 +46,7 @@ export default function SignUp() {
         pin,
         idRef,
       });
-      setIsFetch(false)
+      setIsFetch(false);
       let message = resutls.statusCode === 200 ? "Success" : resutls.message;
       let description =
         resutls.statusCode === 200
@@ -50,109 +58,108 @@ export default function SignUp() {
         placement: "bottomRight",
       });
       if (resutls.statusCode === 200) {
-        history.push(`/verification/${email}/${phone}`)
+        history.push(`/verification/${email}/${phone}`);
       }
     }
   }
 
+  if (isLoading) {
+    return (
+      <Spinner></Spinner>
+    )
+  }
+
   return (
     <Fragment>
-      <div className="layout-default ant-layout layout-sign-up">
-        <Content className="p-0">
-          <div className="sign-up-header"></div>
+      <div className='layout-default ant-layout layout-sign-up'>
+        <Content className='p-0'>
+          <div className='sign-up-header'></div>
           <Card
-            className="card-signup header-solid h-full ant-card pt-0"
-            title={<h5>Register</h5>}
-          >
+            className='card-signup header-solid h-full ant-card pt-0'
+            title={<h5>Register</h5>}>
             <Form
-              name="basic"
-              initialValues={{ remember: true }}
+              name='basic'
+              initialValues={{ refCode: idRef }}
               onFinish={() => doRegister()}
-              className="row-col"
-            >
+              className='row-col'>
               <Form.Item
-                name="name"
-                rules={[{ required: true, message: "Please input your Name!" }]}
-              >
+                name='name'
+                rules={[
+                  { required: true, message: "Please input your Name!" },
+                ]}>
                 <Input
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Name"
+                  placeholder='Name'
                 />
               </Form.Item>
               <Form.Item
-                name="email"
+                name='email'
                 rules={[
                   { required: true, message: "Please input your Email!" },
-                ]}
-              >
+                ]}>
                 <Input
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Email"
+                  placeholder='Email'
                 />
               </Form.Item>
               <Form.Item
-                name="username"
+                name='username'
                 rules={[
                   { required: true, message: "Please input your Username!" },
-                ]}
-              >
+                ]}>
                 <Input
                   onChange={(e) => setUsername(e.target.value)}
-                  placeholder="Username"
+                  placeholder='Username'
                 />
               </Form.Item>
               <Form.Item
-                name="Password"
+                name='Password'
                 rules={[
                   { required: true, message: "Please input your Password!" },
-                ]}
-              >
+                ]}>
                 <Input
                   type={"password"}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Password"
+                  placeholder='Password'
                 />
               </Form.Item>
               <Form.Item
-                name="Cpassword"
+                name='Cpassword'
                 rules={[
                   { required: true, message: "Please input your Password!" },
-                ]}
-              >
+                ]}>
                 <Input
                   type={"password"}
                   onChange={(e) => setPasswordConfirm(e.target.value)}
-                  placeholder="Confirm Password"
+                  placeholder='Confirm Password'
                 />
               </Form.Item>
               <Form.Item
-                name="phone"
+                name='phone'
                 rules={[
                   {
                     required: true,
                     message: "Please input your Phone Number!",
                   },
-                ]}
-              >
+                ]}>
                 <Input
                   onChange={(e) => setPhone(e.target.value)}
-                  placeholder="Phone Number"
+                  placeholder='Phone Number'
                 />
               </Form.Item>
               <Form.Item
-                name="pin"
-                rules={[{ required: true, message: "Please input your Pin!" }]}
-              >
+                name='pin'
+                rules={[{ required: true, message: "Please input your Pin!" }]}>
                 <Input
                   onChange={(e) => setPin(e.target.value)}
-                  placeholder="PIN"
+                  placeholder='PIN'
                 />
               </Form.Item>
-              <Form.Item name="ref">
+              <Form.Item name='refCode'>
                 <Input
-                  addonBefore="Username"
+                  addonBefore='Username'
                   onChange={(e) => setIdRef(e.target.value)}
-                  placeholder="Kode Ref Username"
+                  placeholder='Kode Ref Username'
                 />
               </Form.Item>
               {isFetch ? (
@@ -165,17 +172,16 @@ export default function SignUp() {
                 <Form.Item>
                   <Button
                     style={{ width: "100%" }}
-                    type="primary"
-                    htmlType="submit"
-                  >
+                    type='primary'
+                    htmlType='submit'>
                     SIGN UP
                   </Button>
                 </Form.Item>
               )}
             </Form>
-            <p className="font-semibold text-muted text-center">
+            <p className='font-semibold text-muted text-center'>
               Already have an account?{" "}
-              <Link to="/sign-in" className="font-bold text-dark">
+              <Link to='/sign-in' className='font-bold text-dark'>
                 Sign In
               </Link>
             </p>

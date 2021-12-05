@@ -90,6 +90,15 @@ export default function SignIn() {
                     SIGN IN
                   </Button>
                 </Form.Item>
+                <Form.Item>
+                  <Button
+                    onClick={() => history.push('/forgot-password')}
+                    type="ghost"
+                    style={{ width: "100%" }}
+                  >
+                    Forgot Password
+                  </Button>
+                </Form.Item>
                 <p className="font-semibold text-muted">
                   Don't have an account?{" "}
                   <Link to="/sign-up" className="text-dark font-bold">

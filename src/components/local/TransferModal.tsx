@@ -1,6 +1,7 @@
 import { Button, Card, Input, Modal, notification } from "antd";
 import React, { useEffect, useState } from "react";
 import InputMoney from "../sdsb-component/input/InputMoney";
+import Spinner from "../sdsb-component/spinner/Spinner";
 import TransferService from "./TransferService";
 
 interface IPaymentModal {
@@ -16,6 +17,8 @@ export default function TransferModal(props: IPaymentModal) {
   const [showQrScanner, setShowQrScanner] = useState(false);
   const [showPin, setShowPin] = useState(false);
   const [readOnly, setReadOnly] = useState(false);
+  const [isSearch, setIsSearch] = useState(false);
+  const [isFetch, setIsFetch] = useState(false);
   const [readOnlyAmount, setReadOnlyAmount] = useState(false);
   const [kode, setKode] = useState<string>();
   const [amount, setAmount] = useState<string | null>(null);
@@ -39,6 +42,14 @@ export default function TransferModal(props: IPaymentModal) {
       }
     }
   }, [props]);
+
+  useEffect(() => {
+    if (!props.urlTransaction && kode) {
+      setName('')
+      setUsername('')
+      getUserInformationFromInput();
+    }
+  }, [kode]);
 
   async function initFromQrCode(idCust: string, amount?: string | null) {
     const results = await Service.GetUserInformation(idCust);
@@ -87,8 +98,21 @@ export default function TransferModal(props: IPaymentModal) {
     }
   }
 
+  async function getUserInformationFromInput() {
+    if (kode) {
+      setIsSearch(true);
+      const results = await Service.GetUserInformation(`CUST_${kode}`);
+      if (results.statusCode === 200 && results.data) {
+        setName(results.data.name);
+        setUsername(results.data.username);
+      }
+      setIsSearch(false);
+    }
+  }
+
   async function onSubmit() {
     if (kode && amount && pin) {
+      setIsFetch(true);
       const results = await Service.DoTransfer(kode, amount, pin, description);
       const message = results.statusCode === 200 ? "Success" : results.message;
       const descriptionMsg =
@@ -102,7 +126,9 @@ export default function TransferModal(props: IPaymentModal) {
         description: descriptionMsg,
         placement: "bottomRight",
       });
+      setIsFetch(false);
     } else {
+      setIsFetch(false);
       setPin(null);
       notification.info({
         message: "Error",
@@ -117,8 +143,7 @@ export default function TransferModal(props: IPaymentModal) {
       <Modal
         onOk={() => onSubmit()}
         onCancel={() => setShowPin(false)}
-        visible={showPin}
-      >
+        visible={showPin}>
         <div style={{ marginTop: 20 }}>
           <div style={{ marginBottom: 5 }}>
             <span style={{ fontSize: 15, fontWeight: "bold" }}>PIN</span>
@@ -126,34 +151,30 @@ export default function TransferModal(props: IPaymentModal) {
           <div style={{ marginBottom: 15 }}>
             <Input
               onChange={(e) => setPin(e.target.value)}
-              size="small"
-              type="password"
-            ></Input>
+              size='small'
+              type='password'></Input>
           </div>
         </div>
       </Modal>
       <Modal
         footer={null}
-        title="Transfer Wallet"
+        title='Transfer Wallet SDSB'
         visible={props.show}
-        onCancel={() => props.onClose()}
-      >
+        onCancel={() => props.onClose()}>
         {showQrScanner ? (
           <div>
             <QrReader
               style={{ width: "100%" }}
               onScan={(e: any) => onScan(e)}
               delay={300}
-              onError={() => console.log("asd")}
-            ></QrReader>
+              onError={() => console.log("asd")}></QrReader>
             <div
               style={{
                 display: "flex",
                 justifyContent: "flex-end",
                 marginTop: 20,
-              }}
-            >
-              <Button type="primary" onClick={() => setShowQrScanner(false)}>
+              }}>
+              <Button type='primary' onClick={() => setShowQrScanner(false)}>
                 Close
               </Button>
             </div>
@@ -170,21 +191,18 @@ export default function TransferModal(props: IPaymentModal) {
                 disabled={readOnly}
                 value={kode}
                 onChange={(e) => setKode(e.target.value)}
-                addonBefore="CUST"
-                size="small"
-              ></Input>
+                addonBefore='CUST'
+                size='small'></Input>
               {!props.urlTransaction && (
                 <div
                   onClick={() => setShowQrScanner(true)}
-                  style={{ paddingLeft: 10, marginTop: 5 }}
-                >
+                  style={{ paddingLeft: 10, marginTop: 5 }}>
                   <span
                     style={{
                       fontWeight: "bold",
                       color: "#0b7fab",
                       cursor: "pointer",
-                    }}
-                  >
+                    }}>
                     Scan QR Code
                   </span>
                 </div>
@@ -192,48 +210,79 @@ export default function TransferModal(props: IPaymentModal) {
             </div>
             <InputMoney
               readonly={readOnlyAmount}
-              addOnBefore="Rp"
-              label="Nominal"
+              addOnBefore='Rp'
+              label='Nominal'
               value={amount && amount}
-              onChange={(e: string) => setAmount(e)}
-            ></InputMoney>
+              onChange={(e: string) => setAmount(e)}></InputMoney>
             <div style={{ marginBottom: 5 }}>
               <span style={{ fontSize: 15, fontWeight: "bold" }}>
                 Deskripsi Transfer
               </span>
-
               <div style={{ marginBottom: 15 }}>
                 <TextArea
                   onChange={(e) => setDescription(e.target.value)}
-                  rows={3}
-                ></TextArea>
+                  rows={3}></TextArea>
               </div>
             </div>
-            {name && username && (
-              <div style={{ marginTop: 20 }}>
-                <Card title="Informasi Customer">
-                  <div style={{ display: "flex", marginBottom: 10 }}>
-                    <div style={{ width: 150 }}>Nama</div>
-                    <div style={{ fontWeight: "bold" }}>{name}</div>
+            <div style={{ marginTop: 20 }}>
+              <Card title='Informasi Customer'>
+                {name && username ? (
+                  <div>
+                    <div style={{ display: "flex", marginBottom: 10 }}>
+                      <div style={{ width: 150 }}>Nama</div>
+                      <div style={{ fontWeight: "bold" }}>{name}</div>
+                    </div>
+                    <div style={{ display: "flex", marginBottom: 10 }}>
+                      <div style={{ width: 150 }}>Username</div>
+                      <div style={{ fontWeight: "bold" }}>{username}</div>
+                    </div>
                   </div>
-                  <div style={{ display: "flex", marginBottom: 10 }}>
-                    <div style={{ width: 150 }}>Username</div>
-                    <div style={{ fontWeight: "bold" }}>{username}</div>
+                ) : (
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    {isSearch ? (
+                      <Spinner></Spinner>
+                    ) : (
+                      <div style={{ textAlign: "center" }}>
+                        {kode
+                          ? "Kode customer tidak ditemukan"
+                          : "Lakukan Pengisian Kode Customer atau Scan Qr Code untuk melihat informasi Customer"}
+                      </div>
+                    )}
                   </div>
-                </Card>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    marginTop: 20,
-                  }}
-                >
-                  <Button type="primary" onClick={() => setShowPin(true)}>
-                    Create
-                  </Button>
+                )}
+              </Card>
+              {name && username && (
+                <div>
+                  <div style={{ marginTop: 20 }}>
+                    <div style={{ marginBottom: 5 }}>
+                      <span style={{ fontSize: 15, fontWeight: "bold" }}>
+                        PIN
+                      </span>
+                    </div>
+                    <div style={{ marginBottom: 15 }}>
+                      <Input
+                        onChange={(e) => setPin(e.target.value)}
+                        size='small'
+                        type='password'></Input>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      marginTop: 20,
+                    }}>
+                    {isFetch ? (
+                      <Spinner></Spinner>
+                    ) : (
+                      <Button type='primary' onClick={() => onSubmit()}>
+                        Transfer
+                      </Button>
+                    )}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         )}
       </Modal>

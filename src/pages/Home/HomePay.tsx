@@ -23,12 +23,12 @@ export default function HomePay() {
         onClick={() => setShowQr(true)}
         type={"primary"}
       >
-        Pay Using QR
+        Bayar Pakai QR Code
       </Button>
       {showQr && (
         <Modal
           onCancel={() => setShowQr(false)}
-          title={"Pay With QR Code"}
+          title={"Bayar Pakai QR Code"}
           visible={showQr}
           footer={null}
         >

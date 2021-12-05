@@ -51,9 +51,9 @@ function Billing() {
             <Col xs={12} md={6} xl={6} className="mb-24">
               <CardSmall
                 icon={<PayCircleFilled></PayCircleFilled>}
-                buttonText="Pay"
-                headerText="Payment"
-                descriptionText="Create Payment"
+                buttonText="Bayar"
+                headerText="Pembayaran"
+                descriptionText="Lakukan Pembayaran"
                 onClick={() => setShowPaymentModal(true)}
               ></CardSmall>
             </Col>
@@ -62,7 +62,7 @@ function Billing() {
                 icon={<TransactionOutlined></TransactionOutlined>}
                 buttonText="Transfer"
                 headerText="Transfer"
-                descriptionText="Transfer Wallet"
+                descriptionText="Transfer Wallet SDSB"
                 onClick={() => setShowTransferModal(true)}
               ></CardSmall>
             </Col>

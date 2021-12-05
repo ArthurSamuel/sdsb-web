@@ -1,9 +1,9 @@
 export const KeyToken = 'key'
 
 export const Server = {
-  dev: 'http://159.223.50.120/api',
-  prod: 'http://159.223.50.120/api',
-  baseProd: 'http://159.223.50.120'
+  dev: 'https://sdsb-app.arth.xyz/api',
+  prod: 'https://sdsb-app.arth.xyz/api',
+  baseProd: 'https://sdsb-app.arth.xyz'
 }
 
 export const CustomerServicePhone = '1234'

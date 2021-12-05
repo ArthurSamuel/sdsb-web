@@ -23,6 +23,7 @@ import "./assets/styles/main.css";
 import "./assets/styles/responsive.css";
 import { KeyToken } from './utils/Constant'
 import Verification from "./pages/Verification/Verification";
+import Forgot from "./pages/Forgot/Forgot";
 
 interface IPop {
   component: JSX.Element;
@@ -44,12 +45,13 @@ function App() {
   return (
     <div className="App">
       <Switch>
-        <Route path="/sign-up" exact component={SignUp} />
+        <Route path="/sign-up/:refCode?" exact component={SignUp} />
         <Route path="/sign-in" exact  >
           {!token && <SignIn />}
           {token && <Redirect to="/dashboard" />}
         </Route>
         <Route path="/verification/:emailParam?/:phoneParam?" exact component={Verification} />
+        <Route path="/forgot-password/:token?" exact component={Forgot} />
         <Main>
           <Route exact path="/">
             {token && <Redirect to="/dashboard" />}

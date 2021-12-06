@@ -67,7 +67,6 @@ function App() {
           <CreateRoute component={<Billing />} path='/billing'></CreateRoute>
           <CreateRoute component={<Profile />} path='/profile'></CreateRoute>
           <Route exact component={PasswordReset} path='/password-reset' />
-          <Route component={NotFound}></Route>
         </Main>
       </Switch>
     </div>

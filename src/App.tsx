@@ -21,9 +21,10 @@ import PasswordReset from "./components/sdsb-component/password_reset/PasswordRe
 import "antd/dist/antd.css";
 import "./assets/styles/main.css";
 import "./assets/styles/responsive.css";
-import { KeyToken } from './utils/Constant'
+import { KeyToken } from "./utils/Constant";
 import Verification from "./pages/Verification/Verification";
 import Forgot from "./pages/Forgot/Forgot";
+import NotFound from "./pages/Not_found/NotFound";
 
 interface IPop {
   component: JSX.Element;
@@ -31,37 +32,42 @@ interface IPop {
 }
 
 function App() {
-  const token = localStorage.getItem(KeyToken) ? true : false
+  const token = localStorage.getItem(KeyToken) ? true : false;
 
   const CreateRoute = function (props: IPop) {
     return (
       <Route exact path={props.path}>
         {token && props.component}
-        {!token && <Redirect to="/sign-in" />}
+        {!token && <Redirect to='/sign-in' />}
       </Route>
     );
   };
 
   return (
-    <div className="App">
+    <div className='App'>
       <Switch>
-        <Route path="/sign-up/:refCode?" exact component={SignUp} />
-        <Route path="/sign-in" exact  >
+        <Route path='/sign-up/:refCode?' exact component={SignUp} />
+        <Route path='/sign-in' exact>
           {!token && <SignIn />}
-          {token && <Redirect to="/dashboard" />}
+          {token && <Redirect to='/dashboard' />}
         </Route>
-        <Route path="/verification/:emailParam?/:phoneParam?" exact component={Verification} />
-        <Route path="/forgot-password/:token?" exact component={Forgot} />
+        <Route
+          path='/verification/:emailParam?/:phoneParam?'
+          exact
+          component={Verification}
+        />
+        <Route path='/forgot-password/:token?' exact component={Forgot} />
         <Main>
-          <Route exact path="/">
-            {token && <Redirect to="/dashboard" />}
-            {!token && <Redirect to="/sign-in" />}
+          <Route exact path='/'>
+            {token && <Redirect to='/dashboard' />}
+            {!token && <Redirect to='/sign-in' />}
           </Route>
-          <CreateRoute component={<Home />} path="/dashboard"></CreateRoute>
-          <CreateRoute component={<Tables />} path="/qrcode"></CreateRoute>
-          <CreateRoute component={<Billing />} path="/billing"></CreateRoute>
-          <CreateRoute component={<Profile />} path="/profile"></CreateRoute>
-          <Route exact component={PasswordReset} path="/password-reset" />
+          <CreateRoute component={<Home />} path='/dashboard'></CreateRoute>
+          <CreateRoute component={<Tables />} path='/qrcode'></CreateRoute>
+          <CreateRoute component={<Billing />} path='/billing'></CreateRoute>
+          <CreateRoute component={<Profile />} path='/profile'></CreateRoute>
+          <Route exact component={PasswordReset} path='/password-reset' />
+          <Route component={NotFound}></Route>
         </Main>
       </Switch>
     </div>

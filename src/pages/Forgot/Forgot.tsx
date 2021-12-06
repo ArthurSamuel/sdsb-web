@@ -24,7 +24,7 @@ export default function Forgot() {
           height: "100vh",
           width: '100%'
         }}>
-        <div style={{ width: '100%', padding: 20 }}>
+        <div style={{ width: '100%', padding: 20, maxWidth: 600 }}>
           <ForgotPassword
             onSubmit={(e: IForgotPassword) => onSubmit(e)}></ForgotPassword>
         </div>

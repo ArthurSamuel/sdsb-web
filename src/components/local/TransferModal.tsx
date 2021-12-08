@@ -1,5 +1,6 @@
 import { Button, Card, Input, Modal, notification } from "antd";
 import React, { useEffect, useState } from "react";
+import { ToMoneyFormat } from "../../utils/Helper";
 import InputMoney from "../sdsb-component/input/InputMoney";
 import Spinner from "../sdsb-component/spinner/Spinner";
 import TransferService from "./TransferService";
@@ -20,6 +21,7 @@ export default function TransferModal(props: IPaymentModal) {
   const [isSearch, setIsSearch] = useState(false);
   const [isFetch, setIsFetch] = useState(false);
   const [readOnlyAmount, setReadOnlyAmount] = useState(false);
+  const [readOnlyDesc, setReadOnlyDesc] = useState(false);
   const [kode, setKode] = useState<string>();
   const [amount, setAmount] = useState<string | null>(null);
   const [name, setName] = useState<string>();
@@ -35,7 +37,7 @@ export default function TransferModal(props: IPaymentModal) {
       let tempAmount = args.get("am");
       if (tempAmount) {
         tempAmount = tempAmount.replace("k", "");
-        tempAmount = (parseInt(tempAmount) * 1000).toString();
+        tempAmount = (parseFloat(tempAmount) * 1000).toString();
       }
       if (idCust) {
         initFromQrCode(idCust, tempAmount);
@@ -45,8 +47,8 @@ export default function TransferModal(props: IPaymentModal) {
 
   useEffect(() => {
     if (!props.urlTransaction && kode) {
-      setName('')
-      setUsername('')
+      setName("");
+      setUsername("");
       getUserInformationFromInput();
     }
   }, [kode]);
@@ -68,18 +70,26 @@ export default function TransferModal(props: IPaymentModal) {
   async function onScan(e: any) {
     if (e) {
       setReadOnlyAmount(false);
+      setReadOnlyDesc(false)
+      setDescription('')
       const tempUrl = new URL(e);
       const args = new URLSearchParams(tempUrl.search);
       const idCust = args.get("id");
-      let amount = args.get("am");
+      let totalPayment: any = args.get("am");
+      totalPayment = totalPayment?.substr(0, totalPayment.length - 1) * 1000;
+      let amount = totalPayment;
       if (idCust) {
         const results = await Service.GetUserInformation(idCust);
         if (results.statusCode === 200) {
           if (amount) {
-            amount = (
-              parseInt(amount?.substr(0, amount.length - 1)) * 1000
-            ).toString();
+            amount = (parseFloat(totalPayment) * 0.3).toString();
             setReadOnlyAmount(true);
+            setReadOnlyDesc(true)
+            setDescription(
+              `Total Pembayaran: ${ToMoneyFormat(
+                totalPayment
+              )} \rSisa Pembayaran: ${ToMoneyFormat(amount)}`
+            );
           }
           setReadOnly(true);
           setAmount(amount);
@@ -143,7 +153,8 @@ export default function TransferModal(props: IPaymentModal) {
       <Modal
         onOk={() => onSubmit()}
         onCancel={() => setShowPin(false)}
-        visible={showPin}>
+        visible={showPin}
+      >
         <div style={{ marginTop: 20 }}>
           <div style={{ marginBottom: 5 }}>
             <span style={{ fontSize: 15, fontWeight: "bold" }}>PIN</span>
@@ -151,30 +162,34 @@ export default function TransferModal(props: IPaymentModal) {
           <div style={{ marginBottom: 15 }}>
             <Input
               onChange={(e) => setPin(e.target.value)}
-              size='small'
-              type='password'></Input>
+              size="small"
+              type="password"
+            ></Input>
           </div>
         </div>
       </Modal>
       <Modal
         footer={null}
-        title='Transfer Wallet SDSB'
+        title="Transfer Wallet SDSB"
         visible={props.show}
-        onCancel={() => props.onClose()}>
+        onCancel={() => props.onClose()}
+      >
         {showQrScanner ? (
           <div>
             <QrReader
               style={{ width: "100%" }}
               onScan={(e: any) => onScan(e)}
               delay={300}
-              onError={() => console.log("asd")}></QrReader>
+              onError={() => console.log("asd")}
+            ></QrReader>
             <div
               style={{
                 display: "flex",
                 justifyContent: "flex-end",
                 marginTop: 20,
-              }}>
-              <Button type='primary' onClick={() => setShowQrScanner(false)}>
+              }}
+            >
+              <Button type="primary" onClick={() => setShowQrScanner(false)}>
                 Close
               </Button>
             </div>
@@ -191,18 +206,21 @@ export default function TransferModal(props: IPaymentModal) {
                 disabled={readOnly}
                 value={kode}
                 onChange={(e) => setKode(e.target.value)}
-                addonBefore='CUST'
-                size='small'></Input>
+                addonBefore="CUST"
+                size="small"
+              ></Input>
               {!props.urlTransaction && (
                 <div
                   onClick={() => setShowQrScanner(true)}
-                  style={{ paddingLeft: 10, marginTop: 5 }}>
+                  style={{ paddingLeft: 10, marginTop: 5 }}
+                >
                   <span
                     style={{
                       fontWeight: "bold",
                       color: "#0b7fab",
                       cursor: "pointer",
-                    }}>
+                    }}
+                  >
                     Scan QR Code
                   </span>
                 </div>
@@ -210,22 +228,26 @@ export default function TransferModal(props: IPaymentModal) {
             </div>
             <InputMoney
               readonly={readOnlyAmount}
-              addOnBefore='Rp'
-              label='Nominal'
+              addOnBefore="Rp"
+              label="Nominal"
               value={amount && amount}
-              onChange={(e: string) => setAmount(e)}></InputMoney>
+              onChange={(e: string) => setAmount(e)}
+            ></InputMoney>
             <div style={{ marginBottom: 5 }}>
               <span style={{ fontSize: 15, fontWeight: "bold" }}>
                 Deskripsi Transfer
               </span>
-              <div style={{ marginBottom: 15 }}>
+              <div style={{ marginBottom: 15, marginTop: 10 }}>
                 <TextArea
+                  value={description}
+                  disabled={readOnlyDesc}
                   onChange={(e) => setDescription(e.target.value)}
-                  rows={3}></TextArea>
+                  rows={3}
+                ></TextArea>
               </div>
             </div>
             <div style={{ marginTop: 20 }}>
-              <Card title='Informasi Customer'>
+              <Card title="Informasi Customer">
                 {name && username ? (
                   <div>
                     <div style={{ display: "flex", marginBottom: 10 }}>
@@ -262,8 +284,9 @@ export default function TransferModal(props: IPaymentModal) {
                     <div style={{ marginBottom: 15 }}>
                       <Input
                         onChange={(e) => setPin(e.target.value)}
-                        size='small'
-                        type='password'></Input>
+                        size="small"
+                        type="password"
+                      ></Input>
                     </div>
                   </div>
                   <div
@@ -271,11 +294,12 @@ export default function TransferModal(props: IPaymentModal) {
                       display: "flex",
                       justifyContent: "flex-end",
                       marginTop: 20,
-                    }}>
+                    }}
+                  >
                     {isFetch ? (
                       <Spinner></Spinner>
                     ) : (
-                      <Button type='primary' onClick={() => onSubmit()}>
+                      <Button type="primary" onClick={() => onSubmit()}>
                         Transfer
                       </Button>
                     )}

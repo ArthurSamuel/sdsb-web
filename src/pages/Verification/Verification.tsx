@@ -66,81 +66,41 @@ export default function Verification() {
     }
   }
 
-  async function sentPhoneCode() {
-    const identifier = phone;
-    if (!identifier) {
-      return;
-    }
-    if (timerPhone === 60) {
-      const results = await Service.SentVerificationCode(identifier, "phone");
-      notification.open({
-        message:
-          results.statusCode === 200
-            ? "Berhasil Mengirim Kode"
-            : results.error_message,
-        placement: "bottomRight",
-        type: "info",
-      });
-      if (results.statusCode === 200) {
-        refTimerPhone.current = setInterval(() => {
-          setTimerPhone((prev) => {
-            if (prev - 1 > 0) {
-              return prev - 1;
-            }
-            return 60;
-          });
-        }, 1000);
-      }
-    }
-  }
-
-  async function sentCode(type: "phone" | "email") {
-    const timerToCount = type === "phone" ? timerPhone : timerEmail;
-    const identifier = type === "phone" ? phone : email;
-    if (!identifier) {
-      return;
-    }
-    if (timerToCount === 60) {
-      const results = await Service.SentVerificationCode(identifier, type);
-      notification.open({
-        message:
-          results.statusCode === 200
-            ? "Berhasil Mengirim Kode"
-            : results.error_message,
-        placement: "bottomRight",
-        type: "info",
-      });
-      if (results.statusCode === 200) {
-        if (type === "email") {
-          refTimerEmail.current = setInterval(() => {
-            setTimerEmail((prev) => {
-              if (prev - 1 > 0) {
-                return prev - 1;
-              }
-              return 60;
-            });
-          }, 1000);
-        } else {
-          refTimerPhone.current = setInterval(() => {
-            setTimerPhone((prev) => {
-              if (prev - 1 > 0) {
-                return prev - 1;
-              }
-              return 60;
-            });
-          }, 1000);
-        }
-      }
-    }
-  }
+  // async function sentPhoneCode() {
+  //   const identifier = phone;
+  //   if (!identifier) {
+  //     return;
+  //   }
+  //   if (timerPhone === 60) {
+  //     const results = await Service.SentVerificationCode(identifier, "phone");
+  //     notification.open({
+  //       message:
+  //         results.statusCode === 200
+  //           ? "Berhasil Mengirim Kode"
+  //           : results.error_message,
+  //       placement: "bottomRight",
+  //       type: "info",
+  //     });
+  //     if (results.statusCode === 200) {
+  //       refTimerPhone.current = setInterval(() => {
+  //         setTimerPhone((prev) => {
+  //           if (prev - 1 > 0) {
+  //             return prev - 1;
+  //           }
+  //           return 60;
+  //         });
+  //       }, 1000);
+  //     }
+  //   }
+  // }
 
   async function onSubmit() {
-    if (emailVer && phoneVer && email && phone) {
+    if (emailVer && email) {
       const results = await Service.SubmitVerification(
         email,
-        phone,
+        'phone', //disabled phone due to client wishes
         emailVer,
-        phoneVer
+        'phoneVer' //disabled phone due to client wishes
       );
       notification.open({
         message:
@@ -215,7 +175,7 @@ export default function Verification() {
                 {timerEmail < 60 && <span>{timerEmail}</span>}
               </div>
             </Form.Item>
-            <Form.Item
+            {/* <Form.Item
               className='username'
               label='Kode Verifikasi Nomor Telepon'
               rules={[
@@ -241,7 +201,7 @@ export default function Verification() {
                 </span>
                 {timerPhone < 60 && <span>{timerPhone}</span>}
               </div>
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item>
               <Button
                 onClick={() => onSubmit()}

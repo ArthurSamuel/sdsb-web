@@ -53,7 +53,7 @@ function Billing() {
                 icon={<PayCircleFilled></PayCircleFilled>}
                 buttonText="Bayar"
                 headerText="Pembayaran"
-                descriptionText="Lakukan Pembayaran"
+                descriptionText="Buat Pembayaran"
                 onClick={() => setShowPaymentModal(true)}
               ></CardSmall>
             </Col>

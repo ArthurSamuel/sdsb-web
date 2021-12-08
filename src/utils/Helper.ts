@@ -12,3 +12,8 @@ export const CreditToString = (credit: string) => {
   }
   return `+Rp ${temp}`;
 };
+
+export const ToMoneyFormat = (credit: string | number) => {
+  const temp = credit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  return temp
+}

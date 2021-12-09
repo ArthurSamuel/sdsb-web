@@ -53,7 +53,7 @@ export default function TransferModal(props: IPaymentModal) {
     }
   }, [kode]);
 
-  async function initFromQrCode(idCust: string, amount?: string | null) {
+  async function initFromQrCode(idCust: string, amount?: any | null) {
     const results = await Service.GetUserInformation(idCust);
     if (results.statusCode === 200) {
       setKode(idCust.split("_")[1]);
@@ -61,8 +61,14 @@ export default function TransferModal(props: IPaymentModal) {
       setName(results.data && results.data.name);
       setUsername(results.data && results.data.username);
       if (amount) {
-        setAmount(amount);
+        setReadOnlyDesc(true)
+        setAmount(Math.round(amount * 0.3).toString());
         setReadOnlyAmount(true);
+        setDescription(
+          `Total Pembayaran: ${ToMoneyFormat(
+            amount
+          )} \rSisa Pembayaran: ${ToMoneyFormat(Math.round(amount * 0.3))}`
+        );
       }
     }
   }
@@ -82,7 +88,7 @@ export default function TransferModal(props: IPaymentModal) {
         const results = await Service.GetUserInformation(idCust);
         if (results.statusCode === 200) {
           if (amount) {
-            amount = (parseFloat(totalPayment) * 0.3).toString();
+            amount = (Math.round(parseFloat(totalPayment) * 0.3)).toString();
             setReadOnlyAmount(true);
             setReadOnlyDesc(true)
             setDescription(

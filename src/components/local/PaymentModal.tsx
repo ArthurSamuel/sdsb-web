@@ -26,8 +26,6 @@ export default function PaymentModal(props: IPaymentModal) {
       const tempAmount = parseFloat(amount) * 0.3;
       if (parseFloat(amount) >= 1000) {
         setAmountSDSB(tempAmount.toString());
-        generateQrCode()
-        setShowGenerateQrcode(true)
       } else {
         setAmountSDSB('0');
         setShowGenerateQrcode(false)

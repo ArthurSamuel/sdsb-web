@@ -5,6 +5,7 @@ import {
   UserOutlined,
   PhoneOutlined,
   WhatsAppOutlined,
+  PayCircleFilled,
 } from "@ant-design/icons";
 import CardLogo from "../../components/sdsb-component/card_logo/CardLogo";
 import HistoryTransaction from "../../components/sdsb-component/history_transcation/HistoryTransaction";
@@ -20,6 +21,7 @@ import HomePay from "./HomePay";
 import TransferModal from "../../components/local/TransferModal";
 import { useHistory } from "react-router";
 import HomeService from "./service/HomeService";
+import PaymentModal from "../../components/local/PaymentModal";
 
 function Home() {
   const Service = new HomeService();
@@ -30,6 +32,7 @@ function Home() {
   const [name, setName] = React.useState<string>();
   const [credit, setCredit] = React.useState<string | null>(null);
   const [username, setUsername] = React.useState<string>()
+  const [showPaymentModal, setShowPaymentModal] = React.useState(false);
 
   React.useEffect(() => {
     getCredit();
@@ -121,22 +124,11 @@ function Home() {
             content='Profil Saya'
             icon={<UserOutlined></UserOutlined>}
             onClick={() => history.push("/profile")}></CardLogo>
-          <CardLogo
-            headerText='Bantuan'
-            content='Telp'
-            icon={<PhoneOutlined></PhoneOutlined>}
-            onClick={() =>
-              window.open(`tel:${CustomerServicePhone}`)
-            }></CardLogo>
-          <CardLogo
-            headerText='Bantuan'
-            content='WA'
-            icon={<WhatsAppOutlined></WhatsAppOutlined>}
-            onClick={() =>
-              window.open(
-                `whatsapp://send/?phone=${CustomerServiceWA}&text=${CustomerServiceWAMessage}`
-              )
-            }></CardLogo>
+           <CardLogo
+                headerText='Pembayaran'
+                content='Buat Pembayaran'
+                icon={<PayCircleFilled></PayCircleFilled>}
+                onClick={() => setShowPaymentModal(true)}></CardLogo>
         </Row>
         <Row>
           <Col xs={24}>
@@ -144,6 +136,7 @@ function Home() {
           </Col>
         </Row>
       </div>
+      <PaymentModal show={showPaymentModal} onClose={() => setShowPaymentModal(false)}></PaymentModal>
       <TransferModal
         show={showTransfer}
         onClose={() => setShowTransfer(false)}></TransferModal>

@@ -37,7 +37,7 @@ export default function TransferModal(props: IPaymentModal) {
       let tempAmount = args.get("am");
       if (tempAmount) {
         tempAmount = tempAmount.replace("k", "");
-        tempAmount = (parseFloat(tempAmount) * 1000).toString();
+        tempAmount = Math.round(parseFloat(tempAmount) * 1000).toString();
       }
       if (idCust) {
         initFromQrCode(idCust, tempAmount);
@@ -67,7 +67,7 @@ export default function TransferModal(props: IPaymentModal) {
         setDescription(
           `Total Pembayaran: ${ToMoneyFormat(
             amount
-          )} \rSisa Pembayaran: ${ToMoneyFormat(Math.round(amount * 0.3))}`
+          )} \rSisa Pembayaran: ${ToMoneyFormat(Math.round(amount - amount * 0.3))}`
         );
       }
     }

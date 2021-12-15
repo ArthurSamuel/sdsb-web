@@ -23,7 +23,7 @@ export default function PaymentModal(props: IPaymentModal) {
 
   useEffect(() => {
     if (amount) {
-      const tempAmount = parseFloat(amount) * 0.3;
+      const tempAmount = Math.round(parseFloat(amount) * 0.3);
       if (parseFloat(amount) >= 1000) {
         setAmountSDSB(tempAmount.toString());
       } else {

@@ -1,26 +1,35 @@
 import React, { Fragment, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { Layout, Button, Row, Col, Typography, Form, Input, notification } from "antd";
+import {
+  Layout,
+  Button,
+  Row,
+  Col,
+  Typography,
+  Form,
+  Input,
+  notification,
+} from "antd";
 import signinbg from "../../assets/images/img-signin.jpg";
 import { Content } from "antd/lib/layout/layout";
 import SignInService from "./SignInService";
 import { KeyToken } from "../../utils/Constant";
 
 export default function SignIn() {
-  const history = useHistory()
+  const history = useHistory();
   const Service = new SignInService();
   const { Title } = Typography;
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   async function login() {
-    const results = await Service.GetUser(username, password)
+    const results = await Service.GetUser(username, password);
     if (results && results.data && results.data.token) {
-      localStorage.setItem(KeyToken, JSON.stringify(results.data))
-      window.location.reload()
-      return
+      localStorage.setItem(KeyToken, JSON.stringify(results.data));
+      window.location.reload();
+      return;
     } else if (results.statusCode === 700) {
-      history.push(`/verification/${results.data.email}/${results.data.phone}`)
+      history.push(`/verification/${results.data.email}/${results.data.phone}`);
     }
     notification.error({
       message: results.message,
@@ -43,10 +52,7 @@ export default function SignIn() {
               <Title className="font-regular text-muted" level={5}>
                 Enter your username and password to sign in
               </Title>
-              <Form
-                layout="vertical"
-                className="row-col"
-              >
+              <Form layout="vertical" className="row-col">
                 <Form.Item
                   className="username"
                   label="Username"
@@ -75,7 +81,7 @@ export default function SignIn() {
                   ]}
                 >
                   <Input
-                    type={'password'}
+                    type={"password"}
                     placeholder="Password"
                     onChange={(e) => setPassword(e.target.value)}
                   />
@@ -92,12 +98,29 @@ export default function SignIn() {
                 </Form.Item>
                 <Form.Item>
                   <Button
-                    onClick={() => history.push('/forgot-password')}
+                    onClick={() => history.push("/forgot-password")}
                     type="ghost"
                     style={{ width: "100%" }}
                   >
                     Forgot Password
                   </Button>
+                </Form.Item>
+                <Form.Item>
+                  <a
+                    style={{
+                      padding: 10,
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: '#03a678',
+                      borderRadius: 5,
+                      color: 'white'
+                    }}
+                    href="/sdsb.apk"
+                    download
+                  >
+                    Download App
+                  </a>
                 </Form.Item>
                 <p className="font-semibold text-muted">
                   Don't have an account?{" "}
@@ -106,15 +129,6 @@ export default function SignIn() {
                   </Link>
                 </p>
               </Form>
-            </Col>
-            <Col
-              className="sign-img"
-              style={{ padding: 12 }}
-              xs={{ span: 24 }}
-              lg={{ span: 12 }}
-              md={{ span: 12 }}
-            >
-              <img src={signinbg} alt="" />
             </Col>
           </Row>
         </Content>

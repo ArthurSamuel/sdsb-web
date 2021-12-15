@@ -1,9 +1,9 @@
 export const KeyToken = 'key'
 
 export const Server = {
-  dev: 'https://sdsb-app.arth.xyz/api',
-  prod: 'https://sdsb-app.arth.xyz/api',
-  baseProd: 'https://sdsb-app.arth.xyz'
+  dev: 'https://admin.sdsbvoucher.com/api',
+  prod: 'https://admin.sdsbvoucher.com/api',
+  baseProd: 'https://admin.sdsbvoucher.com'
 }
 
 export const CustomerServicePhone = '1234'
